@@ -1,2 +1,4 @@
 # co-plane
-Web application on Python, Django, Django Rest Framework
+Web application will be developed to simplify general aviation aircraft ownership. 
+
+in developing
