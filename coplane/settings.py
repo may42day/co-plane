@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-(rdq^&zg01=_b!2kc2%h%2k-f)p#6@=713l9=&wknf%)rj=9h$
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
-
+CSRF_TRUSTED_ORIGINS = ['https://*.127.0.0.1']
 
 # Application definition
 
@@ -121,3 +121,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/'
+
+AUTH_USER_MODEL = 'user.User'

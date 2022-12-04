@@ -1,0 +1,14 @@
+nav {
+    background-color: #ced4e8;
+    box-shadow: 0 8px 5px rgba(0, 0, 0, .1);
+}
+
+.section-register{
+    background-color: #60b3d3;
+}
+
+.register-picture{
+    border-top-left-radius:.3rem;
+    border-top-right-radius:.3rem;
+
+}
