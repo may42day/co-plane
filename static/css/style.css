@@ -10,5 +10,27 @@ nav {
 .register-picture{
     border-top-left-radius:.3rem;
     border-top-right-radius:.3rem;
+}
 
+.section-login{
+    background-color: #316fa2;
+}
+
+.login-picture{
+    display: block;
+    border-radius: 1rem 0 0 1rem;
+    object-fit: cover;
+    min-height: 100vh;
+}
+
+.login-card{
+    border-radius: 1rem;
+}
+
+.login-h{
+    letter-spacing: 1px;
+}
+
+.login-reg{
+    color: #316fa2;
 }

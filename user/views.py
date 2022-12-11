@@ -1,3 +1,5 @@
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
 from django.forms import model_to_dict
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -21,14 +23,25 @@ class RegisterUser(CreateView):
     template_name = 'user/SignUp.html'
     success_url = reverse_lazy('user:home')
 
+
 class UserAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
 
 class UserAPIUpdate(generics.UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 class UserAPIDetailedView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class LoginUser(LoginView):
+    form_class = LoginForm
+    template_name = 'user/SignIn.html'
+    success_url = reverse_lazy('user:home')
+
+# class LogoutUser()

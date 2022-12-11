@@ -1,5 +1,7 @@
 from django import forms
 from captcha.fields import CaptchaField
+from django.contrib.auth.forms import AuthenticationForm
+
 from .models import User
 
 
@@ -35,3 +37,15 @@ class UserRegisterForm(forms.ModelForm):
             return 'Passwords do NOT match!'
         return data['repeat_password']
 
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(label='Username',
+                               widget=forms.TextInput(attrs={
+                                   'placeholder': 'Username',
+                                   'class': 'form-control',
+                               }))
+    password = forms.CharField(label='Password',
+                               widget=forms.PasswordInput(attrs={
+                                   'placeholder': 'Password',
+                                   'class': 'form-control',
+                               }))
