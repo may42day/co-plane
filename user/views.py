@@ -1,5 +1,6 @@
+from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.forms import model_to_dict
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -44,4 +45,6 @@ class LoginUser(LoginView):
     template_name = 'user/SignIn.html'
     success_url = reverse_lazy('user:home')
 
-# class LogoutUser()
+
+class LogoutView(LogoutView):
+    next_page = reverse_lazy('user:login')
