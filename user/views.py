@@ -1,7 +1,12 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 from rest_framework.permissions import IsAdminUser
 
 from .forms import *
@@ -20,6 +25,10 @@ class RegisterUser(CreateView):
     template_name = 'user/SignUp.html'
     success_url = reverse_lazy('user:home')
 
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect(reverse('user:profile', kwargs={'pk':user.pk}))
 
 class LoginUser(LoginView):
     form_class = LoginForm
@@ -29,6 +38,18 @@ class LoginUser(LoginView):
 
 class LogoutView(LogoutView):
     next_page = reverse_lazy('user:login-main')
+
+
+class UserProfile(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = 'user/Profile.html'
+    context_object_name = 'profile'
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        if self.request.user.pk == pk:
+            return User.objects.filter(pk=pk)
+        raise PermissionDenied()
 
 
 # API

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
+
 from .usa_states import get_states_choices
 
 
@@ -23,8 +25,8 @@ class User(AbstractUser):
                               verbose_name='User Photo',
                               default='uploads/users/default.png')
 
-    # def get_absolute_url(self):
-    #     return reverse('profile', kwargs={'pk':self.pk})
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'pk':self.pk})
 
     class Meta:
         verbose_name = 'User'
