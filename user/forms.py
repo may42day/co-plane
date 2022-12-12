@@ -31,11 +31,18 @@ class UserRegisterForm(forms.ModelForm):
             }),
         }
 
-    def clean_password(self):
+    def clean_repeat_password(self):
         data = self.cleaned_data
         if data['password'] != data['repeat_password']:
             return 'Passwords do NOT match!'
         return data['repeat_password']
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        email_exists = User.objects.filter(email__iexact=email)
+        if email_exists:
+            return f'An account with email address {email} already exists'
+        return email
 
 
 class LoginForm(AuthenticationForm):
