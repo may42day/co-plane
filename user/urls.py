@@ -14,6 +14,7 @@ urlpatterns = [
     path('login', LoginUser.as_view(), name='login-main'),
     path('logout', LogoutView.as_view(), name='logout-main'),
     path('profile/<int:pk>', UserProfile.as_view(), name='profile'),
+    path('profile/<int:pk>/edit', user_update_profile, name='profile-edit'),
     path('api/v1/register', RegisterUserAPI.as_view()),
     path('api/v1/user/<int:pk>', UserUpdateAPI.as_view()),
     path('api/v1/user/delete/<int:pk>', DeleteUserAPI.as_view()),

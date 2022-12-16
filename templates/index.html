@@ -46,6 +46,9 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown">
                   <li><a class="dropdown-item" href="{% url 'user:profile' user.pk %}">Profile</a></li>
+                  <li><a class="dropdown-item" href="#">Messages</a></li>
+                  <li><a class="dropdown-item" href="#">Notifications</a></li>
+                  <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="{% url 'user:logout-main' %}">Exit</a></li>
               </ul>
             </li>

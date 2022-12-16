@@ -6,26 +6,21 @@
 
 
 {% block content %}
+<button class="btn btn-primary" type="submit">Save</button>
 <section class="h-80 h-custom section-profile">
   <div class="container py-3">
-      <div class="main-body">
+    <div class="main-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="row gutters-sm">
           <div class="col-md-4 mb-3">
             <div class="card">
               <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
-                  <img src="{{ profile.photo.url }}" alt="Admin" class="rounded-circle" width="150">
+                  <img src="{{ user.photo.url }}" alt="Admin" class="rounded-circle" width="150">
                   <div class="mt-3">
-                    <h4>{{ profile.first_name}} {{profile.last_name}}</h4>
-                    {% if not profile.state == 'NO' %}
-                      <p class="text-muted font-size-sm">{{ profile.get_state_display }}</p>
-                    {% endif %}
-
-                    {% if user.pk == profile.pk %}
-                      <a class="btn btn-outline-primary" href="#">My messages</a>
-                    {% else %}
-                      <a class="btn btn-outline-primary" href="#">Message</a>
-                    {% endif %}
+                      {{ form_user_info.photo }}
+                      {{ form_user_info.photo.errors }}
                   </div>
                 </div>
               </div>
@@ -33,97 +28,96 @@
 
             <div class="card mt-3">
               <ul class="list-group list-group-flush">
-                {% if profile.socialmedia.website %}
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                   <h6 class="mb-0">
                   <img src="{% static 'pictures/social-media/website.png' %}" alt="website-icon" width="24" height="24">
                     Website</h6>
-                  <span class="text-secondary">{{ profile.socialmedia.website }}</span>
+                  {{ form_social_media.website }}
+                  {{ form_social_media.website.errors }}
                 </li>
-                {% endif %}
-                {% if profile.socialmedia.instagram %}
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                   <h6 class="mb-0">
                   <img src="{% static 'pictures/social-media/inst.png' %}" alt="instagram-icon" width="24" height="24">
                     Instagram</h6>
-                  <span class="text-secondary">{{ profile.socialmedia.instagram }}</span>
+                  {{ form_social_media.instagram }}
+                  {{ form_social_media.instagram.errors }}
                 </li>
-                {% endif %}
-                {% if profile.socialmedia.facebook %}
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                   <h6 class="mb-0">
                     <img src="{% static 'pictures/social-media/facebook.jpg' %}" alt="facebook-icon" width="24" height="24">
                     Facebook</h6>
-                  <span class="text-secondary">{{ profile.socialmedia.facebook }}</span>
+                  {{ form_social_media.facebook }}
+                  {{ form_social_media.facebook.errors }}
                 </li>
-                {% endif %}
-                {% if profile.socialmedia.twitter %}
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                   <h6 class="mb-0">
                     <img src="{% static 'pictures/social-media/twitter.png' %}" alt="twitter-icon" width="24" height="24">
                     Twitter</h6>
-                  <span class="text-secondary">{{ profile.socialmedia.twitter }}</span>
+                  {{ form_social_media.twitter }}
+                  {{ form_social_media.twitter.errors }}
                 </li>
-                {% endif %}
-                {% if profile.socialmedia.youtube %}
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                   <h6 class="mb-0">
                     <img src="{% static 'pictures/social-media/youtube.png' %}" alt="youtube-icon" width="24" height="24">
                     YouTube</h6>
-                  <span class="text-secondary">{{ profile.socialmedia.youtube }}</span>
+                  {{ form_social_media.youtube }}
+                  {{ form_social_media.youtube.errors }}
                 </li>
-                {% endif %}
               </ul>
             </div>
           </div>
-
 
           <div class="col-md-8">
             <div class="card mb-3">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Full Name</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ profile.first_name }} {{profile.last_name }}
+                  <div class="form-group mb-2">
+                       {{ form_user_info.first_name.label }}
+                       {{ form_user_info.first_name }}
+                       {{ form_user_info.first_name.errors }}
                   </div>
                 </div>
-                <hr>
                 <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Email</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ profile.email }}
+                  <div class="form-group mb-2">
+                    {{ form_user_info.last_name.label }}
+                    {{ form_user_info.last_name }}
+                    {{ form_user_info.last_name.errors }}
                   </div>
                 </div>
-                <hr>
                 <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">Phone</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ profile.phone_number }}
+                  <div class="form-group mb-2">
+                    {{ form_user_info.state.label }}
+                    {{ form_user_info.state }}
+                    {{ form_user_info.state.errors }}
                   </div>
                 </div>
-                <hr>
                 <div class="row">
-                  <div class="col-sm-3">
-                    <h6 class="mb-0">State</h6>
-                  </div>
-                  <div class="col-sm-9 text-secondary">
-                    {{ profile.get_state_display }}
+                  <div class="form-group mb-2">
+                    {{ form_user_info.phone_number.label }}
+                    {{ form_user_info.phone_number }}
+                    {{ form_user_info.phone_number.errors }}
                   </div>
                 </div>
-                {% if user.pk == profile.pk %}
-                <hr>
                 <div class="row">
-                  <div class="col-sm-12">
-                    <a class="btn btn-info" href="{% url 'user:profile-edit' profile.pk %}">Edit</a>
+                  <div class="form-group mb-2">
+                    {{ form_user_info.profile_status.label }}
+                    {{ form_user_info.profile_status }}
+                    {{ form_user_info.profile_status.errors }}
                   </div>
+                  <div class="row">
+                  <div class="form-group">
+                    {{ form_user_info.email.label }}
+                    {{ form_user_info.email }}
+                    {{ form_user_info.email.errors }}
+                  </div>
+                    <div class="row"><a href="#">Change email</a></div>
+                    <div class="row mb-3"><a href="#">Change passwrod</a></div>
                 </div>
-                {% endif %}
+                </div>
+                  <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <a href="{% url 'user:profile' user.pk %}" class="btn btn-danger">Cancel</a>
+                    <button type="submit" class="btn btn-success">Save</button>
+                 </div>
               </div>
             </div>
 
@@ -133,12 +127,16 @@
                   <div class="card-body">
                     <div class="d-flex justify-content-between">
                       <h6 class="d-flex align-items-center mb-3">Licenses</h6>
-                      {% if user.pk == profile.pk %}
                       <a class="btn btn-outline-primary btn-sm" href="#">add</a>
-                      {% endif %}
                     </div>
-                    <div>CPL</div>
-                    <div>PPL</div>
+                    <div>
+                      CPL
+                      <a class="btn btn-outline-danger btn-sm" href="#">delete</a>
+                    </div>
+                    <div>
+                      PPL
+                      <a class="btn btn-outline-danger btn-sm" href="#">delete</a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -148,9 +146,6 @@
                   <div class="card-body">
                     <div class="d-flex justify-content-between">
                       <h6 class="d-flex align-items-center mb-3">Partnership club</h6>
-                      {% if user.pk == profile.pk %}
-                      <a class="btn btn-outline-primary btn-sm" href="#">add</a>
-                      {% endif %}
                     </div>
                     <div>Club#1</div>
                     <div>Club#2</div>
@@ -161,7 +156,8 @@
             </div>
           </div>
         </div>
-      </div>
+      </form>
+    </div>
   </div>
 </section>
 {% endblock %}

@@ -4,13 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic.base import TemplateView
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView
 from rest_framework.permissions import IsAdminUser
 from django.core.mail import EmailMessage
 
@@ -90,9 +90,48 @@ class UserProfile(LoginRequiredMixin, DetailView):
 
     def get_queryset(self):
         pk = self.kwargs['pk']
-        if self.request.user.pk == pk:
+        current_user = self.request.user
+        if current_user.pk == pk or current_user.is_staff:
             return User.objects.filter(pk=pk)
         raise PermissionDenied()
+
+
+def user_update_profile(request, pk):
+    if request.user.pk != pk:
+        raise PermissionDenied()
+
+    if request.method == 'POST':
+        form_user_info = UserProfileEdit(request.POST, instance=request.user)
+        social_media_obj = UserSocialMedia.objects.filter(user=request.user).first()
+        if social_media_obj:
+            form_social_media = UserSocialMediaEdit(request.POST, instance=social_media_obj)
+        else:
+            form_social_media = UserSocialMediaEdit(request.POST)
+
+        if form_user_info.is_valid() and form_social_media.is_valid():
+            form_user_info.save()
+            if form_social_media.changed_data and social_media_obj:
+                form_social_media.save()
+            elif form_social_media.changed_data:
+                form = form_social_media.save(commit=False)
+                form.user = request.user
+                form.save()
+            return redirect(reverse('user:profile', kwargs={'pk':pk}))
+    else:
+        user = User.objects.get(pk=pk)
+        form_user_info = UserProfileEdit(instance=user)
+
+        try:
+            sm = UserSocialMedia.objects.get(user=user)
+            form_social_media = UserSocialMediaEdit(instance=sm)
+        except Exception:
+            form_social_media = UserSocialMediaEdit()
+    return render(request, 'user/ProfileEdit.html', context={
+        'form_user_info':form_user_info,
+        'form_social_media':form_social_media,
+    })
+
+
 
 
 # API

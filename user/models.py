@@ -33,7 +33,11 @@ class User(AbstractUser):
         verbose_name_plural = 'Users'
         ordering = ['username']
 
-# class PilotProfile(models.Model):
-#     user =
-#     license =
-#     date
+
+class UserSocialMedia(models.Model):
+    user = models.OneToOneField(User, related_name='socialmedia', on_delete=models.CASCADE)
+    website = models.CharField(max_length=20, blank=True, null=True)
+    instagram = models.CharField(max_length=20, blank=True, null=True)
+    facebook = models.CharField(max_length=20, blank=True, null=True)
+    twitter = models.CharField(max_length=20, blank=True, null=True)
+    youtube = models.CharField(max_length=20, blank=True, null=True)
