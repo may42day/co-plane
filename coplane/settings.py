@@ -27,7 +27,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'user.apps.UserConfig',
+    'partners_club.apps.PartnersClubConfig',
+    'licenses.apps.LicensesConfig',
+
     'captcha',
     'rest_framework',
     'rest_framework.authtoken',
