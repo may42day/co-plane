@@ -10,6 +10,7 @@ def photo_directory_path(instance, filename):
 
 
 class User(AbstractUser):
+    """User model - expanded user model"""
     state = models.CharField(max_length=2, choices=get_states_choices(), default='None')
     phone_number = models.CharField(max_length=15, null=True)
     EVERYONE = 'evr'
@@ -35,6 +36,7 @@ class User(AbstractUser):
 
 
 class UserSocialMedia(models.Model):
+    """Social media for each user"""
     user = models.OneToOneField(User, related_name='socialmedia', on_delete=models.CASCADE)
     website = models.CharField(max_length=20, blank=True, null=True)
     instagram = models.CharField(max_length=20, blank=True, null=True)

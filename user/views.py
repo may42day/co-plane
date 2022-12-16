@@ -23,10 +23,12 @@ from .token import token_for_account_activation
 
 
 class HomePage(TemplateView):
+    """Display home page"""
     template_name = 'user/HomePage.html'
 
 
 class RegisterUser(CreateView):
+    """Creating a new user with sending email letter for activation"""
     form_class = UserRegisterForm
     template_name = 'user/SignUp.html'
 
@@ -39,6 +41,7 @@ class RegisterUser(CreateView):
 
 
 def email_activation(request, user, user_email):
+    """Generates and send a email letter with token to complete registration"""
     email_subject = 'Account activation'
     context = {
         'user': user.username,
@@ -59,6 +62,7 @@ def email_activation(request, user, user_email):
 
 
 def activate_account(request, uidb64, token):
+    """Validates data to complete registration"""
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -74,16 +78,19 @@ def activate_account(request, uidb64, token):
 
 
 class LoginUser(LoginView):
+    """Authenticate user"""
     form_class = LoginForm
     template_name = 'user/SignIn.html'
     success_url = reverse_lazy('user:home')
 
 
 class LogoutView(LogoutView):
+    """Close user session"""
     next_page = reverse_lazy('user:login-main')
 
 
 class UserProfile(LoginRequiredMixin, DetailView):
+    """Display user's profile for owner"""
     model = User
     template_name = 'user/Profile.html'
     context_object_name = 'profile'
@@ -97,6 +104,7 @@ class UserProfile(LoginRequiredMixin, DetailView):
 
 
 def user_update_profile(request, pk):
+    """Updates user's profile"""
     if request.user.pk != pk:
         raise PermissionDenied()
 
@@ -136,22 +144,20 @@ def user_update_profile(request, pk):
 
 # API
 class RegisterUserAPI(generics.CreateAPIView):
+    """API for creating a new user"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class DeleteUserAPI(generics.DestroyAPIView):
+    """API for deleting user"""
     queryset = User.objects.all()
     permission_classes = (IsAdminUser,)
 
 
 class UserUpdateAPI(generics.UpdateAPIView):
+    """API for updating user info"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsOwnerOrReadOnly,)
 
-
-class UserProfileAPI(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsOwnerOrReadOnly)
