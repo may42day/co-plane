@@ -10,7 +10,7 @@ from user.views import *
 urlpatterns = [
     path('', HomePage.as_view(), name='home'),
     path('register', RegisterUser.as_view(), name='register'),
-    path('activate/<str:uidb64>/<str:token>', activate_account, name='activate'),
+    path('activate/<str:uid64>/<str:token>', activate_account, name='activate'),
     path('login', LoginUser.as_view(), name='login-main'),
     path('logout', LogoutView.as_view(), name='logout-main'),
     path('profile/<int:pk>', UserProfile.as_view(), name='profile'),
